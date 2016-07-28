@@ -18,10 +18,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="css\estilo.css" />
+    <Content Include="img\MspCAN.png" />
+    <Content Include="img\programmer.png" />
     <Content Include="index.html" />
     <Content Include="teste01.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="css\" />
+    <Folder Include="img\" />
   </ItemGroup>
 </Project>
