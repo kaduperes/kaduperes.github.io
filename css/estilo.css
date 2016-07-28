@@ -1,0 +1,27 @@
+﻿body{
+    margin:0px;
+    overflow-y: hidden;
+    font-size:4em;
+    background-color:#302d55;
+    color:white;
+}
+img{
+    width: 40%;
+}
+.table{
+    display: table;
+}
+
+.table-cell{
+    display: table-cell;
+}
+
+.valignMiddle{
+    vertical-align: middle;
+}
+
+#page{
+    width: 100%;
+
+}
+

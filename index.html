@@ -1,17 +1,28 @@
 ﻿<!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <title></title>
+    <link rel="stylesheet" href="css/estilo.css" />
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>    <title></title>
 </head>
 <body>
-    <section class="table">
-        <div class="container table-cell valignMiddle">
-            KADUPERES GITHUB
-
+    <section id="page" class="table">
+        <div class="container table-cell valignMiddle text-center">
+http://kaduperes.github.io<br/>
+            <img src="http://sansaoewhisky.orgfree.com/images/kaduLogo.png" alt="Logo Kadu" />
         </div>
     </section>
+    <script>
+        $('#page').height($(window).height());
+        $(window).resize(function () {
+            $('#page').height($(window).height());
+        });
+    </script>
 </body>
 </html>
+
+<!--
+dividir o preço do etanol pela gaxolina, se der menor que 0,7, compensa
+-->
