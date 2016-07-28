@@ -16,4 +16,7 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <IncludeDebugInformation>false</IncludeDebugInformation>
   </PropertyGroup>
+  <ItemGroup>
+    <Content Include="index.html" />
+  </ItemGroup>
 </Project>
