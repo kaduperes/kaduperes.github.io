@@ -19,6 +19,7 @@
   <ItemGroup>
     <Content Include="css\estilo.css" />
     <Content Include="index.html" />
+    <Content Include="teste01.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="css\" />
