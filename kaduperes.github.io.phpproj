@@ -16,7 +16,4 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <IncludeDebugInformation>false</IncludeDebugInformation>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="index.php" />
-  </ItemGroup>
 </Project>
