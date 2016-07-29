@@ -21,6 +21,7 @@
     <Content Include="img\MspCAN.png" />
     <Content Include="img\programmer.png" />
     <Content Include="index.html" />
+    <Content Include="responsividade.html" />
     <Content Include="teste01.html" />
   </ItemGroup>
   <ItemGroup>
