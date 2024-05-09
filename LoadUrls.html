@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Web Page Loader</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha384-yId2jEq/NYN6SMO1t0a6+YO1ALQW9ajcsD2y14M4+tO6MBCdIzOqRPVwvbbVjXao" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
+    <style>
+        /* Global styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #f0f4f8;
+        }
+
+        /* Menu bar */
+        #menuBar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            height: 60px; /* Set fixed height for menu bar */
+        }
+
+        h1 {
+            font-weight: 600;
+            font-size: 24px;
+        }
+
+        /* Menu button container */
+        #menuButtons {
+            display: flex;
+            gap: 10px; /* Space between buttons */
+        }
+
+        /* Menu buttons */
+        #menuBar button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: #0056b3;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        #menuBar button i {
+            margin-right: 6px;
+        }
+
+        /* Container styling */
+        #container {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            padding-top: 80px; /* Add padding to account for menu bar height */
+            height: calc(100vh - 80px); /* Adjust height accounting for padding */
+            overflow: auto;
+        }
+
+        /* Column styling */
+        .column {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            width: 30%;
+            overflow: hidden;
+            transition: box-shadow 0.3s;
+        }
+
+        .column:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* URL input styling */
+        .urlInput {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin: 10px;
+            outline: none;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .urlInput:focus {
+            border-color: #007bff;
+        }
+
+        /* Iframe container and bottom button */
+        .iframeContainer {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            position: relative;
+        }
+
+        /* Remove button at the bottom of the iframe container */
+        .removeIframeButton {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 8px;
+            border: none;
+            background-color: #ff4d4d;
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .removeIframeButton:hover {
+            background-color: #cc0000;
+        }
+
+        /* Iframe styling */
+        iframe {
+            flex-grow: 1;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Menu bar -->
+    <div id="menuBar">
+        <h1>Web Page Loader</h1>
+        <div id="menuButtons">
+            <button id="addColumn"><i class="fa fa-plus"></i> Add Column</button>
+            <button id="clearUrls"><i class="fa fa-trash"></i> Clear URLs</button>
+            <button id="clearIframes"><i class="fa fa-window-close"></i> Clear Iframes</button>
+        </div>
+    </div>
+
+    <!-- Columns container -->
+    <div id="container">
+        <div class="column">
+            <input type="text" class="urlInput" list="urlList" placeholder="Enter URL here">
+            <datalist id="urlList"></datalist>
+            <div class="iframeContainer">
+                <iframe class="urlFrame"></iframe>
+                <button class="removeIframeButton"><i class="fa fa-times"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const addColumnButton = document.getElementById('addColumn');
+        const clearUrlsButton = document.getElementById('clearUrls');
+        const clearIframesButton = document.getElementById('clearIframes');
+        const container = document.getElementById('container');
+
+        // Retrieve URLs from local storage
+        function getStoredUrls() {
+            const storedUrls = localStorage.getItem('urlList');
+            return storedUrls ? JSON.parse(storedUrls) : [];
+        }
+
+        // Save URLs to local storage
+        function saveUrls(urls) {
+            localStorage.setItem('urlList', JSON.stringify(urls));
+        }
+
+        // Function to add a new column
+        function addColumn() {
+            const column = document.createElement('div');
+            column.classList.add('column');
+
+            const urlInput = document.createElement('input');
+            urlInput.type = 'text';
+            urlInput.classList.add('urlInput');
+            urlInput.setAttribute('list', 'urlList');
+            urlInput.placeholder = 'Enter URL here';
+
+            const iframeContainer = document.createElement('div');
+            iframeContainer.classList.add('iframeContainer');
+
+            // Create the iframe and bottom button
+            const urlFrame = document.createElement('iframe');
+            urlFrame.classList.add('urlFrame');
+
+            const removeIframeButton = document.createElement('button');
+            removeIframeButton.classList.add('removeIframeButton');
+            removeIframeButton.innerHTML = '<i class="fa fa-times"></i>';
+
+            // Add event listener to remove button
+            removeIframeButton.addEventListener('click', function() {
+                column.remove();
+            });
+
+            // Add event listener to update the iframe when the Enter key is pressed
+            const handleKeyDown = function(event) {
+                if (event.key === 'Enter') {
+                    let url = urlInput.value;
+                    if (url && !url.startsWith('http://') && !url.startsWith('https://')) {
+                        url = 'http://' + url;
+                    }
+                    urlFrame.src = url;
+
+                    // Save URL to local storage if it's new
+                    const storedUrls = getStoredUrls();
+                    if (url && !storedUrls.includes(url)) {
+                        storedUrls.push(url);
+                        saveUrls(storedUrls);
+                        updateDatalist(); // Update the datalist options
+                    }
+                }
+            };
+
+            // Add an event listener for the Enter key on URL input
+            urlInput.addEventListener('keydown', handleKeyDown);
+
+            // Append the iframe and bottom button to the container
+            iframeContainer.appendChild(urlFrame);
+            iframeContainer.appendChild(removeIframeButton);
+
+            // Append the input and container to the column
+            column.appendChild(urlInput);
+            column.appendChild(iframeContainer);
+
+            // Add the new column to the container
+            container.appendChild(column);
+        }
+
+        // Add an event listener to the "Add Column" button
+        addColumnButton.addEventListener('click', addColumn);
+
+        // Function to update the datalist options
+        function updateDatalist() {
+            const urlListDatalist = document.getElementById('urlList');
+            urlListDatalist.innerHTML = ''; // Clear existing options
+
+            const storedUrls = getStoredUrls();
+            storedUrls.forEach(url => {
+                const option = document.createElement('option');
+                option.value = url;
+                urlListDatalist.appendChild(option);
+            });
+        }
+
+        // Function to clear URLs from local storage
+        function clearUrls() {
+            localStorage.removeItem('urlList');
+            updateDatalist(); // Refresh the datalist options
+        }
+
+        // Add an event listener to the "Clear URLs" button
+        clearUrlsButton.addEventListener('click', clearUrls);
+
+        // Function to clear all iframes with loaded URLs
+        function clearIframes() {
+            const iframes = document.querySelectorAll('.urlFrame');
+            iframes.forEach(iframe => {
+                iframe.src = '';
+            });
+        }
+
+        // Add an event listener to the "Clear Iframes" button
+        clearIframesButton.addEventListener('click', clearIframes);
+
+        // Initial setup for the first column
+        const initialInput = document.querySelector('.urlInput');
+        const initialFrame = document.querySelector('.urlFrame');
+
+        // Function to update the iframe src and save URL when the Enter key is pressed
+        const handleInitialKeyDown = function(event) {
+            if (event.key === 'Enter') {
+                let url = initialInput.value;
+                if (url && !url.startsWith('http://') && !url.startsWith('https://')) {
+                    url = 'http://' + url;
+                }
+                initialFrame.src = url;
+
+                // Save URL to local storage if it's new
+                const storedUrls = getStoredUrls();
+                if (url && !storedUrls.includes(url)) {
+                    storedUrls.push(url);
+                    saveUrls(storedUrls);
+                    updateDatalist(); // Update the datalist options
+                }
+            }
+        };
+
+        // Add an event listener to the initial input for the Enter key
+        initialInput.addEventListener('keydown', handleInitialKeyDown);
+
+        // Initialize the datalist with stored URLs
+        updateDatalist();
+    </script>
+</body>
+
+</html>
