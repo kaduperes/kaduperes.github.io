@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notes App</title>
-    <!-- Include Material Design CSS from CDN -->
+    <!-- Include Materialize CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <style>
         /* Custom CSS */
@@ -40,12 +40,20 @@
         <nav>
             <div class="nav-wrapper blue">
                 <a href="#" class="brand-logo center">Notes App</a>
+                <a href="#" data-target="mobile-menu" class="sidenav-trigger right">
+                    <i class="material-icons">menu</i>
+                </a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li><a href="#" id="add-note-btn">Add Note</a></li>
                 </ul>
             </div>
         </nav>
     </header>
+
+    <!-- Mobile Side Navigation -->
+    <ul id="mobile-menu" class="sidenav">
+        <li><a href="#" id="add-note-btn-mobile">Add Note</a></li>
+    </ul>
 
     <!-- Main Content -->
     <div class="container">
@@ -70,21 +78,23 @@
         </div>
     </div>
 
-    <!-- Include Material Design JavaScript from CDN -->
+    <!-- Include Material Design JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script>
         // JavaScript code
         // Get references to DOM elements
         const addNoteBtn = document.getElementById('add-note-btn');
+        const addNoteBtnMobile = document.getElementById('add-note-btn-mobile');
         const notesContainer = document.getElementById('notes-container');
         const addNoteModal = document.getElementById('add-note-modal');
         const saveNoteBtn = document.getElementById('save-note-btn');
         const noteTitleInput = document.getElementById('note-title');
         const noteContentInput = document.getElementById('note-content');
 
-        // Initialize modal
+        // Initialize modal and sidenav
         document.addEventListener('DOMContentLoaded', () => {
             M.Modal.init(addNoteModal);
+            M.Sidenav.init(document.querySelectorAll('.sidenav'));
             loadNotes();
         });
 
@@ -140,6 +150,11 @@
         // Event listeners
         addNoteBtn.addEventListener('click', () => {
             M.Modal.getInstance(addNoteModal).open();
+        });
+
+        addNoteBtnMobile.addEventListener('click', () => {
+            M.Modal.getInstance(addNoteModal).open();
+            M.Sidenav.getInstance(document.querySelector('.sidenav')).close();
         });
 
         saveNoteBtn.addEventListener('click', addNote);
