@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes App</title>
+    <!-- Include Material Design CSS from CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <style>
+        /* Custom CSS */
+        /* Application layout */
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        /* Header styles */
+        header {
+            margin-bottom: 20px;
+        }
+
+        /* Notes container styles */
+        #notes-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        /* Note card styles */
+        .card {
+            flex: 1 1 calc(33.333% - 20px);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header with Menu -->
+    <header class="navbar-fixed">
+        <nav>
+            <div class="nav-wrapper blue">
+                <a href="#" class="brand-logo center">Notes App</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="#" id="add-note-btn">Add Note</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div id="notes-container"></div>
+    </div>
+
+    <!-- Add Note Modal -->
+    <div id="add-note-modal" class="modal">
+        <div class="modal-content">
+            <h4>Add a New Note</h4>
+            <div class="input-field">
+                <input id="note-title" type="text" class="validate">
+                <label for="note-title">Title</label>
+            </div>
+            <div class="input-field">
+                <textarea id="note-content" class="materialize-textarea"></textarea>
+                <label for="note-content">Content</label>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="modal-close waves-effect waves-green btn-flat" id="save-note-btn">Save</a>
+        </div>
+    </div>
+
+    <!-- Include Material Design JavaScript from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        // JavaScript code
+        // Get references to DOM elements
+        const addNoteBtn = document.getElementById('add-note-btn');
+        const notesContainer = document.getElementById('notes-container');
+        const addNoteModal = document.getElementById('add-note-modal');
+        const saveNoteBtn = document.getElementById('save-note-btn');
+        const noteTitleInput = document.getElementById('note-title');
+        const noteContentInput = document.getElementById('note-content');
+
+        // Initialize modal
+        document.addEventListener('DOMContentLoaded', () => {
+            M.Modal.init(addNoteModal);
+            loadNotes();
+        });
+
+        // Load notes from local storage
+        function loadNotes() {
+            const notes = JSON.parse(localStorage.getItem('notes')) || [];
+            displayNotes(notes);
+        }
+
+        // Display notes in the notes container
+        function displayNotes(notes) {
+            notesContainer.innerHTML = '';
+            notes.forEach((note, index) => {
+                const noteCard = document.createElement('div');
+                noteCard.className = 'card blue-grey darken-1';
+                noteCard.innerHTML = `
+                    <div class="card-content white-text">
+                        <span class="card-title">${note.title}</span>
+                        <p>${note.content}</p>
+                    </div>
+                `;
+                notesContainer.appendChild(noteCard);
+            });
+        }
+
+        // Save notes to local storage
+        function saveNotes(notes) {
+            localStorage.setItem('notes', JSON.stringify(notes));
+        }
+
+        // Add note functionality
+        function addNote() {
+            const title = noteTitleInput.value.trim();
+            const content = noteContentInput.value.trim();
+            
+            if (title && content) {
+                const notes = JSON.parse(localStorage.getItem('notes')) || [];
+                notes.push({ title, content });
+                saveNotes(notes);
+                displayNotes(notes);
+                
+                // Clear inputs
+                noteTitleInput.value = '';
+                noteContentInput.value = '';
+                
+                // Close modal
+                M.Modal.getInstance(addNoteModal).close();
+            } else {
+                alert('Both title and content are required.');
+            }
+        }
+
+        // Event listeners
+        addNoteBtn.addEventListener('click', () => {
+            M.Modal.getInstance(addNoteModal).open();
+        });
+
+        saveNoteBtn.addEventListener('click', addNote);
+    </script>
+</body>
+
+</html>
