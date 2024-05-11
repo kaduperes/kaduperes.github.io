@@ -23,6 +23,18 @@
             background-attachment: fixed;
             background-repeat: no-repeat;
         }
+
+        #backgroundApp{
+            position:fixed;
+            width:100vw;
+            height: 100vh;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            z-index: -9999;
+            filter: blur(5px);
+        }
         
 
         /* Header styles */
@@ -130,6 +142,15 @@
             --action-icon-hover-color: #bdbdbd;
         }
 
+        nav{
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        nav .brand-logo{
+            color: var(--text-color);
+        }
+
         /* Modal styles */
         .modal {
             color: var(--text-color);
@@ -209,11 +230,12 @@
 </head>
 
 <body>
+    <div id="backgroundApp"></div>
     <!-- Header with Menu -->
     <header class="navbar-fixed">
         <nav>
             <div class="nav-wrapper">
-                <a href="#" class="brand-logo">Notes App</a>
+                <span href="#" class="brand-logo">Notes App</span>
             </div>
         </nav>
     </header>
@@ -314,6 +336,7 @@
         const lightThemeRadio = document.getElementById('light-theme-radio');
         const darkThemeRadio = document.getElementById('dark-theme-radio');
         const bgImageUrlInput = document.getElementById('bg-image-url');
+        const backgroundApp = document.getElementById('backgroundApp');
 
         // Initialize modals
         document.addEventListener('DOMContentLoaded', () => {
@@ -490,14 +513,14 @@
  // Save background image URL to local storage
     function saveBackgroundImage(url) {
         localStorage.setItem('background-image', url);
-        document.body.style.backgroundImage = `url(${url})`; // Update body's background image directly
+        backgroundApp.style.backgroundImage = `url(${url})`; // Set body's background image directly
     }
 
     // Load background image URL from local storage
     function loadBackgroundImage() {
         const url = localStorage.getItem('background-image') || '';
         document.getElementById('bg-image-url').value = url;
-        document.body.style.backgroundImage = `url(${url})`; // Set body's background image directly
+        backgroundApp.style.backgroundImage = `url(${url})`; // Set body's background image directly
     }
 
         // Event listeners
