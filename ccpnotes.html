@@ -21,8 +21,6 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            position: relative;
-            min-height: 100vh;
         }
 
         /* Header styles */
@@ -31,10 +29,6 @@
             color: #ffffff;
             padding: 10px 0;
             text-align: center;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
         }
 
         .brand-logo {
@@ -44,19 +38,6 @@
         /* Main menu styles */
         #nav-mobile {
             background-color: var(--primary-color);
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 10px 0;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        #nav-mobile li {
-            list-style: none;
         }
 
         #nav-mobile li a {
@@ -70,7 +51,6 @@
             justify-content: center;
             gap: 20px;
             padding: 20px;
-            padding-bottom: 80px; /* Adjusted padding for space below fixed menu */
         }
 
         /* Note card styles */
@@ -222,6 +202,10 @@
         <nav>
             <div class="nav-wrapper">
                 <a href="#" class="brand-logo">Notes App</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="#" id="add-note-btn">Add Note</a></li>
+                    <li><a href="#" id="config-btn">Config</a></li>
+                </ul>
             </div>
         </nav>
     </header>
@@ -249,24 +233,82 @@
         </div>
     </div>
 
+    <!-- Edit Note Modal -->
+    <div id="edit-note-modal" class="modal">
+        <div class="modal-content">
+            <h4>Edit Note</h4>
+            <div class="input-field">
+                <input id="edit-note-title" type="text" class="validate">
+                <label for="edit-note-title">Title</label>
+            </div>
+            <div class="input-field">
+                <textarea id="edit-note-content" class="materialize-textarea"></textarea>
+                <label for="edit-note-content">Content</label>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="modal-close waves-effect waves-green btn-flat" id="update-note-btn">Update</a>
+        </div>
+    </div>
+
+    <!-- Config Modal -->
+    <div id="config-modal" class="modal">
+        <div class="modal-content">
+            <h4>Configuration</h4>
+            <p>Choose your preferred theme:</p>
+            <p>
+                <label>
+                    <input name="theme" type="radio" id="light-theme-radio" />
+                    <span>Light Theme</span>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input name="theme" type="radio" id="dark-theme-radio" />
+                    <span>Dark Theme</span>
+                </label>
+            </p>
+            <p>Set background image URL:</p>
+            <div class="input-field">
+                <input id="bg-image-url" type="url" class="validate">
+                <label for="bg-image-url">Background Image URL</label>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="modal-close waves-effect waves-green btn-flat" id="save-config-btn">Save</a>
+        </div>
+    </div>
+
     <!-- Include Materialize JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script>
         // JavaScript code
         // Get references to DOM elements
         const addNoteBtn = document.getElementById('add-note-btn');
+        const configBtn = document.getElementById('config-btn');
         const navMobile = document.getElementById('nav-mobile');
         const notesContainer = document.getElementById('notes-container');
         const addNoteModal = document.getElementById('add-note-modal');
+        const editNoteModal = document.getElementById('edit-note-modal');
+        const configModal = document.getElementById('config-modal');
         const saveNoteBtn = document.getElementById('save-note-btn');
+        const updateNoteBtn = document.getElementById('update-note-btn');
+        const saveConfigBtn = document.getElementById('save-config-btn');
         const noteTitleInput = document.getElementById('note-title');
         const noteContentInput = document.getElementById('note-content');
-        const addNoteBtnMobile = document.getElementById('add-note-btn-mobile');
-        
+        const editNoteTitleInput = document.getElementById('edit-note-title');
+        const editNoteContentInput = document.getElementById('edit-note-content');
+        const lightThemeRadio = document.getElementById('light-theme-radio');
+        const darkThemeRadio = document.getElementById('dark-theme-radio');
+        const bgImageUrlInput = document.getElementById('bg-image-url');
+
         // Initialize modals
         document.addEventListener('DOMContentLoaded', () => {
             M.Modal.init(addNoteModal);
+            M.Modal.init(editNoteModal);
+            M.Modal.init(configModal);
             loadNotes();
+            loadTheme();
         });
 
         // Load notes from local storage
@@ -368,17 +410,105 @@
             };
         }
 
+        // Update note functionality
+        function updateNote(index) {
+            const notes = JSON.parse(localStorage.getItem('notes')) || [];
+            const title = editNoteTitleInput.value.trim();
+            const content = editNoteContentInput.value.trim();
+
+            if (title && content) {
+                notes[index] = { title, content };
+                saveNotes(notes);
+                displayNotes(notes);
+
+                // Close modal
+                M.Modal.getInstance(editNoteModal).close();
+            } else {
+                alert('Both title and content are required.');
+            }
+        }
+
+        // Delete note functionality
+        function deleteNote(index) {
+            const notes = JSON.parse(localStorage.getItem('notes')) || [];
+            notes.splice(index, 1);
+            saveNotes(notes);
+            displayNotes(notes);
+        }
+
+        // Save theme preference to local storage
+        function saveTheme(theme) {
+            localStorage.setItem('theme', theme);
+        }
+
+        // Load theme preference from local storage
+        function loadTheme() {
+            const theme = localStorage.getItem('theme');
+            if (theme === 'dark') {
+                enableDarkMode();
+                darkThemeRadio.checked = true;
+            } else {
+                enableLightMode();
+                lightThemeRadio.checked = true;
+            }
+        }
+
+        // Enable dark mode
+        function enableDarkMode() {
+            document.body.classList.add('dark-mode');
+            navMobile.classList.add('dark-mode');
+        }
+
+        // Disable dark mode
+        function disableDarkMode() {
+            document.body.classList.remove('dark-mode');
+            navMobile.classList.remove('dark-mode');
+        }
+
+        // Toggle theme mode
+        function toggleThemeMode() {
+            if (darkThemeRadio.checked) {
+                enableDarkMode();
+                saveTheme('dark');
+            } else {
+                disableDarkMode();
+                saveTheme('light');
+            }
+        }
+
+        // Save background image URL to local storage
+        function saveBackgroundImage(url) {
+            localStorage.setItem('background-image', url);
+            document.body.style.setProperty('--background-image', `url(${url})`);
+        }
+
+        // Load background image URL from local storage
+        function loadBackgroundImage() {
+            const url = localStorage.getItem('background-image') || '';
+            document.getElementById('bg-image-url').value = url;
+            document.body.style.setProperty('--background-image', `url(${url})`);
+        }
+
         // Event listeners
         addNoteBtn.addEventListener('click', () => {
             M.Modal.getInstance(addNoteModal).open();
         });
 
-        addNoteBtnMobile.addEventListener('click', () => {
-            M.Modal.getInstance(addNoteModal).open();
+        configBtn.addEventListener('click', () => {
+            M.Modal.getInstance(configModal).open();
         });
 
         saveNoteBtn.addEventListener('click', addNote);
 
+        saveConfigBtn.addEventListener('click', () => {
+            toggleThemeMode();
+            const bgImageUrl = bgImageUrlInput.value.trim();
+            saveBackgroundImage(bgImageUrl);
+            M.Modal.getInstance(configModal).close();
+        });
+
+        // Load initial configurations
+        loadBackgroundImage();
     </script>
 </body>
 
