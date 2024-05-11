@@ -440,10 +440,10 @@
         function loadConfig() {
             const theme = localStorage.getItem('theme');
             if (theme === 'dark') {
-                loadDarkMode();
+                enableDarkMode();
                 document.getElementById('dark-theme-radio').checked = true;
             } else {
-                loadLightMode();
+                disableDarkMode();
                 document.getElementById('light-theme-radio').checked = true;
             }
             const bgImageUrl = localStorage.getItem('background-image');
@@ -451,13 +451,13 @@
             document.body.style.setProperty('--background-image', `url(${bgImageUrl})`);
         }
 
-        // Load dark mode configuration
-        function loadDarkMode() {
+        // Enable dark mode
+        function enableDarkMode() {
             document.body.classList.add('dark-mode');
         }
 
-        // Load light mode configuration
-        function loadLightMode() {
+        // Disable dark mode
+        function disableDarkMode() {
             document.body.classList.remove('dark-mode');
         }
 
@@ -482,7 +482,7 @@
 
         document.getElementById('save-config-btn').addEventListener('click', () => {
             saveConfig();
-            loadConfig();
+            loadConfig(); // Reload to apply changes immediately
             M.Modal.getInstance(configModal).close();
         });
     </script>
