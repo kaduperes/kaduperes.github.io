@@ -244,8 +244,17 @@
         function openEditModal(index) {
             const notes = JSON.parse(localStorage.getItem('notes')) || [];
             const { title, content } = notes[index];
+            
             editNoteTitleInput.value = title;
+            if (title) {
+                editNoteTitleInput.nextElementSibling.classList.add('active');
+            }
+            
             editNoteContentInput.value = content;
+            if (content) {
+                editNoteContentInput.nextElementSibling.classList.add('active');
+            }
+
             M.Modal.getInstance(editNoteModal).open();
             updateNoteBtn.onclick = () => {
                 updateNote(index);
