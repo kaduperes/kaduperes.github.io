@@ -44,6 +44,13 @@
             color: var(--text-color);
         }
 
+        /* Hamburger menu icon */
+        .menu-icon {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
         /* Notes container styles */
         #notes-container {
             display: flex;
@@ -202,6 +209,7 @@
         <nav>
             <div class="nav-wrapper">
                 <a href="#" class="brand-logo">Notes App</a>
+                <a href="#" data-target="nav-mobile" class="sidenav-trigger menu-icon"><i class="material-icons">menu</i></a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li><a href="#" id="add-note-btn">Add Note</a></li>
                     <li><a href="#" id="config-btn">Config</a></li>
@@ -209,6 +217,12 @@
             </div>
         </nav>
     </header>
+
+    <!-- Side Navigation -->
+    <ul class="sidenav" id="nav-mobile">
+        <li><a href="#" id="add-note-btn">Add Note</a></li>
+        <li><a href="#" id="config-btn">Config</a></li>
+    </ul>
 
     <!-- Main Content -->
     <div class="container">
