@@ -483,18 +483,18 @@
             }
         }
 
-        // Save background image URL to local storage
-        function saveBackgroundImage(url) {
-            localStorage.setItem('background-image', url);
-            document.body.style.setProperty('--background-image', `url(${url})`);
-        }
+ // Save background image URL to local storage
+    function saveBackgroundImage(url) {
+        localStorage.setItem('background-image', url);
+        document.body.style.backgroundImage = `url(${url})`; // Update body's background image directly
+    }
 
-        // Load background image URL from local storage
-        function loadBackgroundImage() {
-            const url = localStorage.getItem('background-image') || '';
-            document.getElementById('bg-image-url').value = url;
-            document.body.style.setProperty('--background-image', `url(${url})`);
-        }
+    // Load background image URL from local storage
+    function loadBackgroundImage() {
+        const url = localStorage.getItem('background-image') || '';
+        document.getElementById('bg-image-url').value = url;
+        document.body.style.backgroundImage = `url(${url})`; // Set body's background image directly
+    }
 
         // Event listeners
         addNoteBtn.addEventListener('click', () => {
