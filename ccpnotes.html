@@ -65,19 +65,19 @@
         .note-card .card-action {
             padding: 16px;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
             border-top: 1px solid #eee;
             background-color: #f9f9f9;
         }
 
-        .note-card .card-action a {
+        .note-card .card-action .delete-note-btn {
             color: #ff3d00;
             cursor: pointer;
             transition: color 0.3s ease;
         }
 
-        .note-card .card-action a:hover {
+        .note-card .card-action .delete-note-btn:hover {
             color: #b02700;
         }
     </style>
@@ -167,9 +167,9 @@
 
             const cardAction = document.createElement('div');
             cardAction.className = 'card-action';
-            const deleteBtn = document.createElement('a');
-            deleteBtn.href = '#';
-            deleteBtn.innerText = 'Delete';
+            const deleteBtn = document.createElement('i');
+            deleteBtn.className = 'material-icons delete-note-btn';
+            deleteBtn.innerText = 'delete';
             deleteBtn.addEventListener('click', () => {
                 deleteNote(index);
             });
