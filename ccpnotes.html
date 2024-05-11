@@ -82,6 +82,12 @@
         .note-card .card-action .material-icons:hover {
             color: #333;
         }
+
+        /* Dark theme styles */
+        .dark-theme {
+            background-color: #1f1f1f;
+            color: #ffffff;
+        }
     </style>
 </head>
 
@@ -330,13 +336,13 @@
             localStorage.setItem('theme', theme);
         }
 
-        // Enable dark mode
+        // Function to enable dark mode
         function enableDarkMode() {
             document.body.classList.add('dark-theme');
             saveTheme('dark');
         }
 
-        // Enable light mode
+        // Function to enable light mode
         function enableLightMode() {
             document.body.classList.remove('dark-theme');
             saveTheme('light');
