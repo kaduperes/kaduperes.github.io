@@ -154,6 +154,21 @@
         .modal-content input[type="search"]:focus,
         .modal-content input[type="week"]:focus,
         .modal-content input[type="color"]:focus,
+        .modal-content input[type="file"]:focus,
+        .modal-content textarea.materialize-textarea:focus,
+        .modal-content input[type="text"]:valid,
+        .modal-content input[type="email"]:valid,
+        .modal-content input[type="password"]:valid,
+        .modal-content input[type="tel"]:valid,
+        .modal-content input[type="url"]:valid,
+        .modal-content input[type="time"]:valid,
+        .modal-content input[type="date"]:valid,
+        .modal-content input[type="datetime-local"]:valid,
+        .modal-content input[type="month"]:valid,
+        .modal-content input[type="number"]:valid,
+        .modal-content input[type="search"]:valid,
+        .modal-content input[type="week"]:valid,
+        .modal-content input[type="color"]:valid,
         .modal-content input[type="file"]:valid,
         .modal-content textarea.materialize-textarea:valid {
             border-bottom: 1px solid var(--primary-color);
@@ -175,7 +190,6 @@
             background-image: var(--background-image);
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
             filter: brightness(75%);
             z-index: -1;
         }
@@ -188,20 +202,13 @@
         <nav>
             <div class="nav-wrapper">
                 <a href="#" class="brand-logo">Notes App</a>
-                <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-                <ul class="right hide-on-med-and-down">
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li><a href="#" id="add-note-btn">Add Note</a></li>
                     <li><a href="#" id="config-btn">Config</a></li>
                 </ul>
             </div>
         </nav>
     </header>
-
-    <!-- Mobile Menu -->
-    <ul class="sidenav" id="mobile-demo">
-        <li><a href="#" id="add-note-btn-mobile">Add Note</a></li>
-        <li><a href="#" id="config-btn-mobile">Config</a></li>
-    </ul>
 
     <!-- Main Content -->
     <div class="container">
@@ -278,9 +285,8 @@
         // JavaScript code
         // Get references to DOM elements
         const addNoteBtn = document.getElementById('add-note-btn');
-        const addNoteBtnMobile = document.getElementById('add-note-btn-mobile');
         const configBtn = document.getElementById('config-btn');
-        const configBtnMobile = document.getElementById('config-btn-mobile');
+        const navMobile = document.getElementById('nav-mobile');
         const notesContainer = document.getElementById('notes-container');
         const addNoteModal = document.getElementById('add-note-modal');
         const editNoteModal = document.getElementById('edit-note-modal');
@@ -450,13 +456,13 @@
         // Enable dark mode
         function enableDarkMode() {
             document.body.classList.add('dark-mode');
-            document.getElementById('nav-mobile').classList.add('dark-mode');
+            navMobile.classList.add('dark-mode');
         }
 
         // Disable dark mode
         function disableDarkMode() {
             document.body.classList.remove('dark-mode');
-            document.getElementById('nav-mobile').classList.remove('dark-mode');
+            navMobile.classList.remove('dark-mode');
         }
 
         // Toggle theme mode
@@ -488,15 +494,7 @@
             M.Modal.getInstance(addNoteModal).open();
         });
 
-        addNoteBtnMobile.addEventListener('click', () => {
-            M.Modal.getInstance(addNoteModal).open();
-        });
-
         configBtn.addEventListener('click', () => {
-            M.Modal.getInstance(configModal).open();
-        });
-
-        configBtnMobile.addEventListener('click', () => {
             M.Modal.getInstance(configModal).open();
         });
 
