@@ -32,6 +32,15 @@
             font-size: 1.5rem;
         }
 
+        /* Main menu styles */
+        #nav-mobile {
+            background-color: var(--primary-color);
+        }
+
+        #nav-mobile li a {
+            color: var(--text-color);
+        }
+
         /* Notes container styles */
         #notes-container {
             display: flex;
@@ -256,6 +265,7 @@
         // Get references to DOM elements
         const addNoteBtn = document.getElementById('add-note-btn');
         const configBtn = document.getElementById('config-btn');
+        const navMobile = document.getElementById('nav-mobile');
         const notesContainer = document.getElementById('notes-container');
         const addNoteModal = document.getElementById('add-note-modal');
         const editNoteModal = document.getElementById('edit-note-modal');
@@ -424,11 +434,13 @@
         // Enable dark mode
         function enableDarkMode() {
             document.body.classList.add('dark-mode');
+            navMobile.classList.add('dark-mode');
         }
 
         // Disable dark mode
         function disableDarkMode() {
             document.body.classList.remove('dark-mode');
+            navMobile.classList.remove('dark-mode');
         }
 
         // Toggle theme mode
