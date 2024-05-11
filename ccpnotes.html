@@ -297,7 +297,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const sidenav = document.querySelectorAll('.sidenav');
             M.Sidenav.init(sidenav, {});
-
+            
             loadNotes();
             loadConfig();
         });
@@ -440,10 +440,10 @@
         function loadConfig() {
             const theme = localStorage.getItem('theme');
             if (theme === 'dark') {
-                enableDarkMode();
+                loadDarkMode();
                 document.getElementById('dark-theme-radio').checked = true;
             } else {
-                enableLightMode();
+                loadLightMode();
                 document.getElementById('light-theme-radio').checked = true;
             }
             const bgImageUrl = localStorage.getItem('background-image');
@@ -451,13 +451,13 @@
             document.body.style.setProperty('--background-image', `url(${bgImageUrl})`);
         }
 
-        // Enable dark mode
-        function enableDarkMode() {
+        // Load dark mode configuration
+        function loadDarkMode() {
             document.body.classList.add('dark-mode');
         }
 
-        // Enable light mode
-        function enableLightMode() {
+        // Load light mode configuration
+        function loadLightMode() {
             document.body.classList.remove('dark-mode');
         }
 
