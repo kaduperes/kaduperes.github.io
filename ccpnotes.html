@@ -82,27 +82,6 @@
         .note-card .card-action .material-icons:hover {
             color: #333;
         }
-
-        /* Dark theme styles */
-        .dark-theme {
-            background-color: #1f1f1f;
-            color: #ffffff;
-        }
-
-        .dark-theme .note-card {
-            background-color: #333;
-            color: #ffffff;
-        }
-
-        .dark-theme .note-card .card-content {
-            background-color: #222;
-            color: #ddd;
-        }
-
-        .dark-theme .note-card .card-action {
-            background-color: #444;
-            color: #f5f5f5;
-        }
     </style>
 </head>
 
@@ -114,7 +93,6 @@
                 <a href="#" class="brand-logo">Notes App</a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li><a href="#" id="add-note-btn">Add Note</a></li>
-                    <li><a href="#" id="config-btn">Options</a></li>
                 </ul>
             </div>
         </nav>
@@ -161,29 +139,6 @@
         </div>
     </div>
 
-    <!-- Config Modal -->
-    <div id="config-modal" class="modal">
-        <div class="modal-content">
-            <h4>App Configuration</h4>
-            <p>Choose a theme:</p>
-            <p>
-                <label>
-                    <input type="radio" name="theme" value="light" id="light-theme" />
-                    <span>Light Mode</span>
-                </label>
-            </p>
-            <p>
-                <label>
-                    <input type="radio" name="theme" value="dark" id="dark-theme" />
-                    <span>Dark Mode</span>
-                </label>
-            </p>
-        </div>
-        <div class="modal-footer">
-            <a href="#" class="modal-close waves-effect waves-green btn-flat" id="save-config-btn">Save</a>
-        </div>
-    </div>
-
     <!-- Include Materialize JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script>
@@ -193,20 +148,18 @@
         const notesContainer = document.getElementById('notes-container');
         const addNoteModal = document.getElementById('add-note-modal');
         const editNoteModal = document.getElementById('edit-note-modal');
-        const configModal = document.getElementById('config-modal');
         const saveNoteBtn = document.getElementById('save-note-btn');
         const updateNoteBtn = document.getElementById('update-note-btn');
-        const saveConfigBtn = document.getElementById('save-config-btn');
-        const lightThemeRadio = document.getElementById('light-theme');
-        const darkThemeRadio = document.getElementById('dark-theme');
+        const noteTitleInput = document.getElementById('note-title');
+        const noteContentInput = document.getElementById('note-content');
+        const editNoteTitleInput = document.getElementById('edit-note-title');
+        const editNoteContentInput = document.getElementById('edit-note-content');
 
         // Initialize modal
         document.addEventListener('DOMContentLoaded', () => {
             M.Modal.init(addNoteModal);
             M.Modal.init(editNoteModal);
-            M.Modal.init(configModal);
             loadNotes();
-            loadTheme();
         });
 
         // Load notes from local storage
@@ -334,57 +287,12 @@
             displayNotes(notes);
         }
 
-        // Load theme from local storage
-        function loadTheme() {
-            const theme = localStorage.getItem('theme');
-            if (theme === 'dark') {
-                enableDarkMode();
-                darkThemeRadio.checked = true;
-            } else {
-                enableLightMode();
-                lightThemeRadio.checked = true;
-            }
-        }
-
-        // Save theme to local storage
-        function saveTheme(theme) {
-            localStorage.setItem('theme', theme);
-        }
-
-        // Function to enable dark mode
-        function enableDarkMode() {
-            document.body.classList.add('dark-theme');
-            saveTheme('dark');
-        }
-
-        // Function to enable light mode
-        function enableLightMode() {
-            document.body.classList.remove('dark-theme');
-            saveTheme('light');
-        }
-
         // Event listeners
         addNoteBtn.addEventListener('click', () => {
             M.Modal.getInstance(addNoteModal).open();
         });
 
         saveNoteBtn.addEventListener('click', addNote);
-
-        lightThemeRadio.addEventListener('change', () => {
-            enableLightMode();
-        });
-
-        darkThemeRadio.addEventListener('change', () => {
-            enableDarkMode();
-        });
-
-        document.getElementById('config-btn').addEventListener('click', () => {
-            M.Modal.getInstance(configModal).open();
-        });
-
-        saveConfigBtn.addEventListener('click', () => {
-            M.Modal.getInstance(configModal).close();
-        });
     </script>
 </body>
 
