@@ -106,6 +106,68 @@
             --action-icon-color: #ffffff;
             --action-icon-hover-color: #bdbdbd;
         }
+
+        /* Modal styles */
+        .modal {
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+
+        .modal-content input[type="text"],
+        .modal-content input[type="email"],
+        .modal-content input[type="password"],
+        .modal-content input[type="tel"],
+        .modal-content input[type="url"],
+        .modal-content input[type="time"],
+        .modal-content input[type="date"],
+        .modal-content input[type="datetime-local"],
+        .modal-content input[type="month"],
+        .modal-content input[type="number"],
+        .modal-content input[type="search"],
+        .modal-content input[type="week"],
+        .modal-content input[type="color"],
+        .modal-content input[type="file"],
+        .modal-content textarea.materialize-textarea,
+        .modal-content input[type="text"]:focus,
+        .modal-content input[type="email"]:focus,
+        .modal-content input[type="password"]:focus,
+        .modal-content input[type="tel"]:focus,
+        .modal-content input[type="url"]:focus,
+        .modal-content input[type="time"]:focus,
+        .modal-content input[type="date"]:focus,
+        .modal-content input[type="datetime-local"]:focus,
+        .modal-content input[type="month"]:focus,
+        .modal-content input[type="number"]:focus,
+        .modal-content input[type="search"]:focus,
+        .modal-content input[type="week"]:focus,
+        .modal-content input[type="color"]:focus,
+        .modal-content input[type="file"]:focus,
+        .modal-content textarea.materialize-textarea:focus,
+        .modal-content input[type="text"]:valid,
+        .modal-content input[type="email"]:valid,
+        .modal-content input[type="password"]:valid,
+        .modal-content input[type="tel"]:valid,
+        .modal-content input[type="url"]:valid,
+        .modal-content input[type="time"]:valid,
+        .modal-content input[type="date"]:valid,
+        .modal-content input[type="datetime-local"]:valid,
+        .modal-content input[type="month"]:valid,
+        .modal-content input[type="number"]:valid,
+        .modal-content input[type="search"]:valid,
+        .modal-content input[type="week"]:valid,
+        .modal-content input[type="color"]:valid,
+        .modal-content input[type="file"]:valid,
+        .modal-content textarea.materialize-textarea.valid {
+            color: var(--text-color);
+        }
+
+        .modal-footer {
+            background-color: var(--primary-color);
+        }
+
+        .modal-footer a.modal-close {
+            color: var(--text-color);
+        }
     </style>
 </head>
 
@@ -277,17 +339,17 @@
         function addNote() {
             const title = noteTitleInput.value.trim();
             const content = noteContentInput.value.trim();
-            
+
             if (title && content) {
                 const notes = JSON.parse(localStorage.getItem('notes')) || [];
                 notes.push({ title, content });
                 saveNotes(notes);
                 displayNotes(notes);
-                
+
                 // Clear inputs
                 noteTitleInput.value = '';
                 noteContentInput.value = '';
-                
+
                 // Close modal
                 M.Modal.getInstance(addNoteModal).close();
             } else {
@@ -299,12 +361,12 @@
         function openEditModal(index) {
             const notes = JSON.parse(localStorage.getItem('notes')) || [];
             const { title, content } = notes[index];
-            
+
             editNoteTitleInput.value = title;
             if (title) {
                 editNoteTitleInput.nextElementSibling.classList.add('active');
             }
-            
+
             editNoteContentInput.value = content;
             if (content) {
                 editNoteContentInput.nextElementSibling.classList.add('active');
@@ -321,12 +383,12 @@
             const notes = JSON.parse(localStorage.getItem('notes')) || [];
             const title = editNoteTitleInput.value.trim();
             const content = editNoteContentInput.value.trim();
-            
+
             if (title && content) {
                 notes[index] = { title, content };
                 saveNotes(notes);
                 displayNotes(notes);
-                
+
                 // Close modal
                 M.Modal.getInstance(editNoteModal).close();
             } else {
