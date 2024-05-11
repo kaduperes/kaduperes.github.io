@@ -44,13 +44,6 @@
             color: var(--text-color);
         }
 
-        /* Hamburger menu icon */
-        .menu-icon {
-            display: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
         /* Notes container styles */
         #notes-container {
             display: flex;
@@ -205,11 +198,11 @@
 
 <body>
     <!-- Header with Menu -->
-    <header class="navbar-fixed">
+    <header>
         <nav>
             <div class="nav-wrapper">
                 <a href="#" class="brand-logo">Notes App</a>
-                <a href="#" data-target="nav-mobile" class="sidenav-trigger menu-icon"><i class="material-icons">menu</i></a>
+                <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li><a href="#" id="add-note-btn">Add Note</a></li>
                     <li><a href="#" id="config-btn">Config</a></li>
@@ -218,10 +211,10 @@
         </nav>
     </header>
 
-    <!-- Side Navigation -->
+    <!-- Side Navigation for Mobile -->
     <ul class="sidenav" id="nav-mobile">
-        <li><a href="#" id="add-note-btn">Add Note</a></li>
-        <li><a href="#" id="config-btn">Config</a></li>
+        <li><a href="#" id="add-note-btn-mobile">Add Note</a></li>
+        <li><a href="#" id="config-btn-mobile">Config</a></li>
     </ul>
 
     <!-- Main Content -->
@@ -299,7 +292,9 @@
         // JavaScript code
         // Get references to DOM elements
         const addNoteBtn = document.getElementById('add-note-btn');
+        const addNoteBtnMobile = document.getElementById('add-note-btn-mobile');
         const configBtn = document.getElementById('config-btn');
+        const configBtnMobile = document.getElementById('config-btn-mobile');
         const navMobile = document.getElementById('nav-mobile');
         const notesContainer = document.getElementById('notes-container');
         const addNoteModal = document.getElementById('add-note-modal');
@@ -321,6 +316,7 @@
             M.Modal.init(addNoteModal);
             M.Modal.init(editNoteModal);
             M.Modal.init(configModal);
+            M.Sidenav.init(navMobile);
             loadNotes();
             loadTheme();
         });
@@ -508,7 +504,15 @@
             M.Modal.getInstance(addNoteModal).open();
         });
 
+        addNoteBtnMobile.addEventListener('click', () => {
+            M.Modal.getInstance(addNoteModal).open();
+        });
+
         configBtn.addEventListener('click', () => {
+            M.Modal.getInstance(configModal).open();
+        });
+
+        configBtnMobile.addEventListener('click', () => {
             M.Modal.getInstance(configModal).open();
         });
 
