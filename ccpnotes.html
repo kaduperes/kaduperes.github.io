@@ -36,12 +36,24 @@
         }
 
         /* Main menu styles */
+        .main-menu {
+            display: flex;
+            justify-content: space-between;
+        }
+
         #nav-mobile {
             background-color: var(--primary-color);
+            display: none; /* Hide by default on desktop */
         }
 
         #nav-mobile li a {
             color: var(--text-color);
+        }
+
+        /* Hamburger menu styles */
+        .menu-icon {
+            display: none; /* Hide by default on desktop */
+            cursor: pointer;
         }
 
         /* Notes container styles */
@@ -141,6 +153,12 @@
         .modal-content input[type="color"],
         .modal-content input[type="file"],
         .modal-content textarea.materialize-textarea,
+        .modal-content select:not([multiple]),
+        .modal-content .dropdown-content li>a,
+        .modal-content .dropdown-content li>span {
+            color: var(--text-color);
+        }
+
         .modal-content input[type="text"]:focus,
         .modal-content input[type="email"]:focus,
         .modal-content input[type="password"]:focus,
@@ -154,21 +172,6 @@
         .modal-content input[type="search"]:focus,
         .modal-content input[type="week"]:focus,
         .modal-content input[type="color"]:focus,
-        .modal-content input[type="file"]:focus,
-        .modal-content textarea.materialize-textarea:focus,
-        .modal-content input[type="text"]:valid,
-        .modal-content input[type="email"]:valid,
-        .modal-content input[type="password"]:valid,
-        .modal-content input[type="tel"]:valid,
-        .modal-content input[type="url"]:valid,
-        .modal-content input[type="time"]:valid,
-        .modal-content input[type="date"]:valid,
-        .modal-content input[type="datetime-local"]:valid,
-        .modal-content input[type="month"]:valid,
-        .modal-content input[type="number"]:valid,
-        .modal-content input[type="search"]:valid,
-        .modal-content input[type="week"]:valid,
-        .modal-content input[type="color"]:valid,
         .modal-content input[type="file"]:valid,
         .modal-content textarea.materialize-textarea:valid {
             border-bottom: 1px solid var(--primary-color);
@@ -190,6 +193,7 @@
             background-image: var(--background-image);
             background-size: cover;
             background-position: center;
+            background-repeat: no-repeat;
             filter: brightness(75%);
             z-index: -1;
         }
@@ -200,8 +204,10 @@
     <!-- Header with Menu -->
     <header class="navbar-fixed">
         <nav>
-            <div class="nav-wrapper">
+            <div class="nav-wrapper main-menu">
                 <a href="#" class="brand-logo">Notes App</a>
+                <a href="#" data-target="nav-mobile" class="sidenav-trigger menu-icon"><i
+                        class="material-icons">menu</i></a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li><a href="#" id="add-note-btn">Add Note</a></li>
                     <li><a href="#" id="config-btn">Config</a></li>
@@ -209,6 +215,12 @@
             </div>
         </nav>
     </header>
+
+    <!-- Mobile Menu -->
+    <ul class="sidenav" id="nav-mobile">
+        <li><a href="#" id="add-note-btn-mobile">Add Note</a></li>
+        <li><a href="#" id="config-btn-mobile">Config</a></li>
+    </ul>
 
     <!-- Main Content -->
     <div class="container">
@@ -282,33 +294,12 @@
     <!-- Include Materialize JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script>
-        // JavaScript code
-        // Get references to DOM elements
-        const addNoteBtn = document.getElementById('add-note-btn');
-        const configBtn = document.getElementById('config-btn');
-        const navMobile = document.getElementById('nav-mobile');
-        const notesContainer = document.getElementById('notes-container');
-        const addNoteModal = document.getElementById('add-note-modal');
-        const editNoteModal = document.getElementById('edit-note-modal');
-        const configModal = document.getElementById('config-modal');
-        const saveNoteBtn = document.getElementById('save-note-btn');
-        const updateNoteBtn = document.getElementById('update-note-btn');
-        const saveConfigBtn = document.getElementById('save-config-btn');
-        const noteTitleInput = document.getElementById('note-title');
-        const noteContentInput = document.getElementById('note-content');
-        const editNoteTitleInput = document.getElementById('edit-note-title');
-        const editNoteContentInput = document.getElementById('edit-note-content');
-        const lightThemeRadio = document.getElementById('light-theme-radio');
-        const darkThemeRadio = document.getElementById('dark-theme-radio');
-        const bgImageUrlInput = document.getElementById('bg-image-url');
-
-        // Initialize modals
         document.addEventListener('DOMContentLoaded', () => {
-            M.Modal.init(addNoteModal);
-            M.Modal.init(editNoteModal);
-            M.Modal.init(configModal);
+            const sidenav = document.querySelectorAll('.sidenav');
+            M.Sidenav.init(sidenav, {});
+
             loadNotes();
-            loadTheme();
+            loadConfig();
         });
 
         // Load notes from local storage
@@ -319,6 +310,7 @@
 
         // Display notes in the notes container
         function displayNotes(notes) {
+            const notesContainer = document.getElementById('notes-container');
             notesContainer.innerHTML = '';
             notes.forEach((note, index) => {
                 const noteCard = createNoteCard(note, index);
@@ -436,79 +428,63 @@
             displayNotes(notes);
         }
 
-        // Save theme preference to local storage
-        function saveTheme(theme) {
+        // Save configuration to local storage
+        function saveConfig() {
+            const theme = document.querySelector('input[name="theme"]:checked').value;
             localStorage.setItem('theme', theme);
+            const bgImageUrl = document.getElementById('bg-image-url').value.trim();
+            localStorage.setItem('background-image', bgImageUrl);
         }
 
-        // Load theme preference from local storage
-        function loadTheme() {
+        // Load configuration from local storage
+        function loadConfig() {
             const theme = localStorage.getItem('theme');
             if (theme === 'dark') {
                 enableDarkMode();
-                darkThemeRadio.checked = true;
+                document.getElementById('dark-theme-radio').checked = true;
             } else {
                 enableLightMode();
-                lightThemeRadio.checked = true;
+                document.getElementById('light-theme-radio').checked = true;
             }
+            const bgImageUrl = localStorage.getItem('background-image');
+            document.getElementById('bg-image-url').value = bgImageUrl;
+            document.body.style.setProperty('--background-image', `url(${bgImageUrl})`);
         }
 
         // Enable dark mode
         function enableDarkMode() {
             document.body.classList.add('dark-mode');
-            navMobile.classList.add('dark-mode');
         }
 
-        // Disable dark mode
-        function disableDarkMode() {
+        // Enable light mode
+        function enableLightMode() {
             document.body.classList.remove('dark-mode');
-            navMobile.classList.remove('dark-mode');
-        }
-
-        // Toggle theme mode
-        function toggleThemeMode() {
-            if (darkThemeRadio.checked) {
-                enableDarkMode();
-                saveTheme('dark');
-            } else {
-                disableDarkMode();
-                saveTheme('light');
-            }
-        }
-
-        // Save background image URL to local storage
-        function saveBackgroundImage(url) {
-            localStorage.setItem('background-image', url);
-            document.body.style.setProperty('--background-image', `url(${url})`);
-        }
-
-        // Load background image URL from local storage
-        function loadBackgroundImage() {
-            const url = localStorage.getItem('background-image') || '';
-            document.getElementById('bg-image-url').value = url;
-            document.body.style.setProperty('--background-image', `url(${url})`);
         }
 
         // Event listeners
-        addNoteBtn.addEventListener('click', () => {
+        document.getElementById('add-note-btn').addEventListener('click', () => {
             M.Modal.getInstance(addNoteModal).open();
         });
 
-        configBtn.addEventListener('click', () => {
+        document.getElementById('add-note-btn-mobile').addEventListener('click', () => {
+            M.Modal.getInstance(addNoteModal).open();
+        });
+
+        document.getElementById('config-btn').addEventListener('click', () => {
             M.Modal.getInstance(configModal).open();
         });
 
-        saveNoteBtn.addEventListener('click', addNote);
-
-        saveConfigBtn.addEventListener('click', () => {
-            toggleThemeMode();
-            const bgImageUrl = bgImageUrlInput.value.trim();
-            saveBackgroundImage(bgImageUrl);
-            M.Modal.getInstance(configModal).close();
+        document.getElementById('config-btn-mobile').addEventListener('click', () => {
+            M.Modal.getInstance(configModal).open();
         });
 
-        // Load initial configurations
-        loadBackgroundImage();
+        document.getElementById('save-note-btn').addEventListener('click', addNote);
+
+        document.getElementById('save-config-btn').addEventListener('click', () => {
+            saveConfig();
+            loadConfig();
+            M.Modal.getInstance(configModal).close();
+        });
     </script>
 </body>
 
