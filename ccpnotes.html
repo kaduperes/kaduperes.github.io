@@ -135,6 +135,10 @@
             color: var(--text-color);
             background-color: var(--background-color);
         }
+         body.dark-mode .modal input,
+         body.dark-mode .modal textarea{
+            color: var(--text-color);
+        }       
 
         .modal-content input[type="text"],
         .modal-content input[type="email"],
@@ -251,7 +255,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <a href="#" class="modal-close waves-effect waves-green btn-flat" id="update-note-btn">Update</a>
+            <span class="modal-close waves-effect waves-green btn-flat material-icons" id="update-note-btn">save</span>
         </div>
     </div>
 
@@ -279,7 +283,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <a href="#" class="modal-close waves-effect waves-green btn-flat" id="save-config-btn">Save</a>
+            <span class="modal-close waves-effect waves-green btn-flat material-icons" id="save-config-btn">save</span>
         </div>
     </div>
 
