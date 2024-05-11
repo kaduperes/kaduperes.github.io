@@ -199,6 +199,15 @@
                 openEditModal(index);
             });
             cardAction.appendChild(editBtn);
+
+            const deleteBtn = document.createElement('i');
+            deleteBtn.className = 'material-icons delete-note-btn';
+            deleteBtn.innerText = 'delete';
+            deleteBtn.addEventListener('click', () => {
+                deleteNote(index);
+            });
+            cardAction.appendChild(deleteBtn);
+
             noteCard.appendChild(cardAction);
 
             return noteCard;
@@ -259,6 +268,14 @@
             } else {
                 alert('Both title and content are required.');
             }
+        }
+
+        // Delete note functionality
+        function deleteNote(index) {
+            const notes = JSON.parse(localStorage.getItem('notes')) || [];
+            notes.splice(index, 1);
+            saveNotes(notes);
+            displayNotes(notes);
         }
 
         // Event listeners
