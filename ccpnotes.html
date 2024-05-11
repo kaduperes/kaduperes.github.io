@@ -13,23 +13,72 @@
         /* Application layout */
         body {
             font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
         }
 
         /* Header styles */
         header {
-            margin-bottom: 20px;
+            background-color: #1976D2;
+            color: #ffffff;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        .brand-logo {
+            font-size: 1.5rem;
         }
 
         /* Notes container styles */
         #notes-container {
             display: flex;
             flex-wrap: wrap;
+            justify-content: center;
             gap: 20px;
+            padding: 20px;
         }
 
         /* Note card styles */
-        .card {
-            flex: 1 1 calc(33.333% - 20px);
+        .note-card {
+            width: 300px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .note-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .note-card .card-content {
+            padding: 16px;
+        }
+
+        .note-card .card-content p {
+            margin-top: 10px;
+            color: #555;
+        }
+
+        .note-card .card-action {
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eee;
+            background-color: #f9f9f9;
+        }
+
+        .note-card .card-action a {
+            color: #ff3d00;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .note-card .card-action a:hover {
+            color: #b02700;
         }
     </style>
 </head>
@@ -38,22 +87,14 @@
     <!-- Header with Menu -->
     <header class="navbar-fixed">
         <nav>
-            <div class="nav-wrapper blue">
-                <a href="#" class="brand-logo center">Notes App</a>
-                <a href="#" data-target="mobile-menu" class="sidenav-trigger right">
-                    <i class="material-icons">menu</i>
-                </a>
+            <div class="nav-wrapper">
+                <a href="#" class="brand-logo">Notes App</a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li><a href="#" id="add-note-btn">Add Note</a></li>
                 </ul>
             </div>
         </nav>
     </header>
-
-    <!-- Mobile Side Navigation -->
-    <ul id="mobile-menu" class="sidenav">
-        <li><a href="#" id="add-note-btn-mobile">Add Note</a></li>
-    </ul>
 
     <!-- Main Content -->
     <div class="container">
@@ -78,23 +119,21 @@
         </div>
     </div>
 
-    <!-- Include Material Design JavaScript -->
+    <!-- Include Materialize JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script>
         // JavaScript code
         // Get references to DOM elements
         const addNoteBtn = document.getElementById('add-note-btn');
-        const addNoteBtnMobile = document.getElementById('add-note-btn-mobile');
         const notesContainer = document.getElementById('notes-container');
         const addNoteModal = document.getElementById('add-note-modal');
         const saveNoteBtn = document.getElementById('save-note-btn');
         const noteTitleInput = document.getElementById('note-title');
         const noteContentInput = document.getElementById('note-content');
 
-        // Initialize modal and sidenav
+        // Initialize modal
         document.addEventListener('DOMContentLoaded', () => {
             M.Modal.init(addNoteModal);
-            M.Sidenav.init(document.querySelectorAll('.sidenav'));
             loadNotes();
         });
 
@@ -108,16 +147,36 @@
         function displayNotes(notes) {
             notesContainer.innerHTML = '';
             notes.forEach((note, index) => {
-                const noteCard = document.createElement('div');
-                noteCard.className = 'card blue-grey darken-1';
-                noteCard.innerHTML = `
-                    <div class="card-content white-text">
-                        <span class="card-title">${note.title}</span>
-                        <p>${note.content}</p>
-                    </div>
-                `;
+                const noteCard = createNoteCard(note, index);
                 notesContainer.appendChild(noteCard);
             });
+        }
+
+        // Create a note card element
+        function createNoteCard(note, index) {
+            const noteCard = document.createElement('div');
+            noteCard.className = 'card note-card';
+
+            const cardContent = document.createElement('div');
+            cardContent.className = 'card-content';
+            cardContent.innerHTML = `
+                <span class="card-title">${note.title}</span>
+                <p>${note.content}</p>
+            `;
+            noteCard.appendChild(cardContent);
+
+            const cardAction = document.createElement('div');
+            cardAction.className = 'card-action';
+            const deleteBtn = document.createElement('a');
+            deleteBtn.href = '#';
+            deleteBtn.innerText = 'Delete';
+            deleteBtn.addEventListener('click', () => {
+                deleteNote(index);
+            });
+            cardAction.appendChild(deleteBtn);
+            noteCard.appendChild(cardAction);
+
+            return noteCard;
         }
 
         // Save notes to local storage
@@ -147,14 +206,17 @@
             }
         }
 
+        // Delete note functionality
+        function deleteNote(index) {
+            const notes = JSON.parse(localStorage.getItem('notes')) || [];
+            notes.splice(index, 1);
+            saveNotes(notes);
+            displayNotes(notes);
+        }
+
         // Event listeners
         addNoteBtn.addEventListener('click', () => {
             M.Modal.getInstance(addNoteModal).open();
-        });
-
-        addNoteBtnMobile.addEventListener('click', () => {
-            M.Modal.getInstance(addNoteModal).open();
-            M.Sidenav.getInstance(document.querySelector('.sidenav')).close();
         });
 
         saveNoteBtn.addEventListener('click', addNote);
