@@ -18,6 +18,8 @@
             padding: 0;
             color: var(--text-color);
             background-color: var(--background-color);
+            background-image: var(--background-image);
+            background-size: cover;
         }
 
         /* Header styles */
@@ -102,6 +104,7 @@
             --card-action-background-color: #f9f9f9;
             --action-icon-color: #757575;
             --action-icon-hover-color: #333;
+            --background-image: none;
         }
 
         /* Dark Mode */
@@ -252,6 +255,11 @@
                     <span>Dark Theme</span>
                 </label>
             </p>
+            <p>Set background image URL:</p>
+            <div class="input-field">
+                <input id="bg-image-url" type="url" class="validate">
+                <label for="bg-image-url">Background Image URL</label>
+            </div>
         </div>
         <div class="modal-footer">
             <a href="#" class="modal-close waves-effect waves-green btn-flat" id="save-config-btn">Save</a>
@@ -279,6 +287,7 @@
         const editNoteContentInput = document.getElementById('edit-note-content');
         const lightThemeRadio = document.getElementById('light-theme-radio');
         const darkThemeRadio = document.getElementById('dark-theme-radio');
+        const bgImageUrlInput = document.getElementById('bg-image-url');
 
         // Initialize modals
         document.addEventListener('DOMContentLoaded', () => {
@@ -454,6 +463,19 @@
             }
         }
 
+        // Save background image URL to local storage
+        function saveBackgroundImage(url) {
+            localStorage.setItem('background-image', url);
+            document.body.style.backgroundImage = `url(${url})`;
+        }
+
+        // Load background image URL from local storage
+        function loadBackgroundImage() {
+            const url = localStorage.getItem('background-image') || '';
+            document.getElementById('bg-image-url').value = url;
+            document.body.style.backgroundImage = `url(${url})`;
+        }
+
         // Event listeners
         addNoteBtn.addEventListener('click', () => {
             M.Modal.getInstance(addNoteModal).open();
@@ -467,8 +489,13 @@
 
         saveConfigBtn.addEventListener('click', () => {
             toggleThemeMode();
+            const bgImageUrl = bgImageUrlInput.value.trim();
+            saveBackgroundImage(bgImageUrl);
             M.Modal.getInstance(configModal).close();
         });
+
+        // Load initial configurations
+        loadBackgroundImage();
     </script>
 </body>
 
