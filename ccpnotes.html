@@ -18,8 +18,9 @@
             padding: 0;
             color: var(--text-color);
             background-color: var(--background-color);
-            background-image: var(--background-image);
             background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         /* Header styles */
@@ -169,16 +170,28 @@
         .modal-content input[type="week"]:valid,
         .modal-content input[type="color"]:valid,
         .modal-content input[type="file"]:valid,
-        .modal-content textarea.materialize-textarea.valid {
-            color: var(--text-color);
+        .modal-content textarea.materialize-textarea:valid {
+            border-bottom: 1px solid var(--primary-color);
+            box-shadow: 0 1px 0 0 var(--primary-color);
         }
 
-        .modal-footer {
+        .modal-footer a.btn {
             background-color: var(--primary-color);
         }
 
-        .modal-footer a.modal-close {
-            color: var(--text-color);
+        /* Background Image */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: var(--background-image);
+            background-size: cover;
+            background-position: center;
+            filter: brightness(75%);
+            z-index: -1;
         }
     </style>
 </head>
@@ -466,14 +479,14 @@
         // Save background image URL to local storage
         function saveBackgroundImage(url) {
             localStorage.setItem('background-image', url);
-            document.body.style.backgroundImage = `url(${url})`;
+            document.body.style.setProperty('--background-image', `url(${url})`);
         }
 
         // Load background image URL from local storage
         function loadBackgroundImage() {
             const url = localStorage.getItem('background-image') || '';
             document.getElementById('bg-image-url').value = url;
-            document.body.style.backgroundImage = `url(${url})`;
+            document.body.style.setProperty('--background-image', `url(${url})`);
         }
 
         // Event listeners
