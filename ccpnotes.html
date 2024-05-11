@@ -93,6 +93,7 @@
                 <a href="#" class="brand-logo">Notes App</a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li><a href="#" id="add-note-btn">Add Note</a></li>
+                    <li><a href="#" id="config-btn">Config</a></li>
                 </ul>
             </div>
         </nav>
@@ -139,27 +140,57 @@
         </div>
     </div>
 
+    <!-- Config Modal -->
+    <div id="config-modal" class="modal">
+        <div class="modal-content">
+            <h4>Configuration</h4>
+            <p>Choose your preferred theme:</p>
+            <p>
+                <label>
+                    <input name="theme" type="radio" id="light-theme-radio" />
+                    <span>Light Theme</span>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input name="theme" type="radio" id="dark-theme-radio" />
+                    <span>Dark Theme</span>
+                </label>
+            </p>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="modal-close waves-effect waves-green btn-flat" id="save-config-btn">Save</a>
+        </div>
+    </div>
+
     <!-- Include Materialize JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script>
         // JavaScript code
         // Get references to DOM elements
         const addNoteBtn = document.getElementById('add-note-btn');
+        const configBtn = document.getElementById('config-btn');
         const notesContainer = document.getElementById('notes-container');
         const addNoteModal = document.getElementById('add-note-modal');
         const editNoteModal = document.getElementById('edit-note-modal');
+        const configModal = document.getElementById('config-modal');
         const saveNoteBtn = document.getElementById('save-note-btn');
         const updateNoteBtn = document.getElementById('update-note-btn');
+        const saveConfigBtn = document.getElementById('save-config-btn');
         const noteTitleInput = document.getElementById('note-title');
         const noteContentInput = document.getElementById('note-content');
         const editNoteTitleInput = document.getElementById('edit-note-title');
         const editNoteContentInput = document.getElementById('edit-note-content');
+        const lightThemeRadio = document.getElementById('light-theme-radio');
+        const darkThemeRadio = document.getElementById('dark-theme-radio');
 
-        // Initialize modal
+        // Initialize modals
         document.addEventListener('DOMContentLoaded', () => {
             M.Modal.init(addNoteModal);
             M.Modal.init(editNoteModal);
+            M.Modal.init(configModal);
             loadNotes();
+            loadTheme();
         });
 
         // Load notes from local storage
@@ -287,12 +318,59 @@
             displayNotes(notes);
         }
 
+        // Save theme preference to local storage
+        function saveTheme(theme) {
+            localStorage.setItem('theme', theme);
+        }
+
+        // Load theme preference from local storage
+        function loadTheme() {
+            const theme = localStorage.getItem('theme');
+            if (theme === 'dark') {
+                enableDarkMode();
+                darkThemeRadio.checked = true;
+            } else {
+                enableLightMode();
+                lightThemeRadio.checked = true;
+            }
+        }
+
+        // Enable dark mode
+        function enableDarkMode() {
+            document.body.classList.add('dark-mode');
+        }
+
+        // Disable dark mode
+        function disableDarkMode() {
+            document.body.classList.remove('dark-mode');
+        }
+
+        // Toggle theme mode
+        function toggleThemeMode() {
+            if (darkThemeRadio.checked) {
+                enableDarkMode();
+                saveTheme('dark');
+            } else {
+                disableDarkMode();
+                saveTheme('light');
+            }
+        }
+
         // Event listeners
         addNoteBtn.addEventListener('click', () => {
             M.Modal.getInstance(addNoteModal).open();
         });
 
+        configBtn.addEventListener('click', () => {
+            M.Modal.getInstance(configModal).open();
+        });
+
         saveNoteBtn.addEventListener('click', addNote);
+
+        saveConfigBtn.addEventListener('click', () => {
+            toggleThemeMode();
+            M.Modal.getInstance(configModal).close();
+        });
     </script>
 </body>
 
