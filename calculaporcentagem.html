@@ -41,6 +41,10 @@
 </div>
 
 <script>
+    function formatCurrency(amount) {
+        return '$' + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    }
+
     function calcular() {
         var total = parseFloat(document.getElementById('total').value);
         var menor = parseFloat(document.getElementById('menor').value);
@@ -50,10 +54,10 @@
         var porcentagemDiferenca = (diferenca / total) * 100;
 
         document.getElementById('result').innerHTML = `
-            <p>Valor Total: ${total}</p>
-            <p>Valor Menor: ${menor}</p>
+            <p>Valor Total: ${formatCurrency(total)}</p>
+            <p>Valor Menor: ${formatCurrency(menor)}</p>
             <p>Porcentagem do valor menor em relação ao valor total: ${porcentagemMenor.toFixed(2)}%</p>
-            <p>Diferença entre o valor total e o valor menor: ${diferenca}</p>
+            <p>Diferença entre o valor total e o valor menor: ${formatCurrency(diferenca)}</p>
             <p>Porcentagem da diferença em relação ao valor total: ${porcentagemDiferenca.toFixed(2)}%</p>
         `;
     }
