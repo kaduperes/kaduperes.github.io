@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dynamic Textbox with Sum</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+  }
+  .container {
+    width: 300px;
+  }
+  .input-container {
+    margin-bottom: 10px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="input-container">
+    <input type="number" class="input-number" placeholder="Enter a number" onkeydown="addTextBox(event)">
+  </div>
+  <div id="sum"></div>
+</div>
+
+<script>
+  function addTextBox(event) {
+    if (event.key === "Enter") {
+      const inputValue = event.target.value.trim();
+      if (!inputValue) return;
+
+      const sumElement = document.getElementById("sum");
+      const textBox = document.createElement("input");
+      textBox.type = "number";
+      textBox.classList.add("input-number");
+      textBox.placeholder = "Enter a number";
+      textBox.onkeydown = addTextBox;
+
+      sumElement.parentNode.insertBefore(textBox, sumElement);
+      event.target.value = ""; // Clear the input field
+
+      updateSum();
+    }
+  }
+
+  function updateSum() {
+    const inputNumbers = document.querySelectorAll(".input-number");
+    let sum = 0;
+    inputNumbers.forEach(input => {
+      sum += parseFloat(input.value) || 0; // Convert input value to float, default to 0 if NaN
+    });
+
+    const sumElement = document.getElementById("sum");
+    sumElement.textContent = "Sum: " + sum;
+  }
+</script>
+</body>
+</html>
