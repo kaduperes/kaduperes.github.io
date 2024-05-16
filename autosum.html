@@ -4,8 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dynamic Textbox Creation with Sum</title>
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
-    /* CSS for styling */
+    /* Custom CSS for additional styling */
     .input-container {
         margin-bottom: 10px;
     }
@@ -13,16 +15,24 @@
 </head>
 <body>
 
-<div id="container">
-    <div class="input-container">
-        <input type="text" class="input-text" onkeydown="createNewInput(event)">
+<header class="container py-3">
+    <h1 class="text-center">SUM APP</h1>
+</header>
+
+<div class="container">
+    <div id="container">
+        <div class="input-container">
+            <input type="text" class="form-control input-text" onkeydown="createNewInput(event)">
+        </div>
+    </div>
+
+    <div id="sum-container" class="mt-4">
+        <p class="lead">Sum: <span id="sum">0</span></p>
     </div>
 </div>
 
-<div id="sum-container">
-    <p>Sum: <span id="sum">0</span></p>
-</div>
-
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     let sum = 0; // Variable to store the sum of all values
 
@@ -46,7 +56,7 @@
             newInputContainer.classList.add("input-container");
             const newInput = document.createElement("input");
             newInput.type = "text";
-            newInput.classList.add("input-text");
+            newInput.classList.add("form-control", "input-text");
             newInput.addEventListener('input', updateSum); // Add event listener to new input to update sum
             newInputContainer.appendChild(newInput);
             container.appendChild(newInputContainer);
