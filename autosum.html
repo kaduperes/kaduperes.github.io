@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dynamic Textbox Creation</title>
+<title>Dynamic Textbox Creation with Sum</title>
 <style>
     /* CSS for styling */
     .input-container {
@@ -19,7 +19,24 @@
     </div>
 </div>
 
+<div id="sum-container">
+    <p>Sum: <span id="sum">0</span></p>
+</div>
+
 <script>
+    let sum = 0; // Variable to store the sum of all values
+
+    // Function to update the sum and display it
+    function updateSum() {
+        sum = 0;
+        const inputs = document.querySelectorAll('.input-text');
+        inputs.forEach(input => {
+            const value = parseInt(input.value) || 0;
+            sum += value;
+        });
+        document.getElementById('sum').textContent = sum;
+    }
+
     // JavaScript for creating new input box on pressing Enter
     function createNewInput(event) {
         if (event.key === "Enter") {
@@ -30,9 +47,11 @@
             const newInput = document.createElement("input");
             newInput.type = "text";
             newInput.classList.add("input-text");
+            newInput.addEventListener('input', updateSum); // Add event listener to new input to update sum
             newInputContainer.appendChild(newInput);
             container.appendChild(newInputContainer);
             newInput.focus(); // Focus on the newly created input
+            updateSum(); // Update the sum when a new input is created
             newInput.addEventListener('keydown', createNewInput); // Add event listener to the new input
         }
     }
