@@ -33,6 +33,7 @@
             newInputContainer.appendChild(newInput);
             container.appendChild(newInputContainer);
             newInput.focus(); // Focus on the newly created input
+            newInput.addEventListener('keydown', createNewInput); // Add event listener to the new input
         }
     }
 </script>
