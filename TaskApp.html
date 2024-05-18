@@ -4,63 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Manager</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="TaskApp.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <!-- Header Section -->
-    <header>
+    <header class="bg-primary text-white text-center py-3">
         <h1>Task Manager</h1>
     </header>
 
     <!-- Main Content -->
-    <main>
+    <main class="container mt-4">
         <!-- Add Task Section -->
-        <section id="add-task-section">
-            <form id="task-form">
-                <input type="text" id="task-input" placeholder="New Task" required>
-                <select id="priority-select">
+        <section id="add-task-section" class="mb-4">
+            <form id="task-form" class="form-inline justify-content-center">
+                <input type="text" id="task-input" class="form-control mr-2" placeholder="New Task" required>
+                <select id="priority-select" class="form-control mr-2">
                     <option value="low">Low</option>
                     <option value="medium">Medium</option>
                     <option value="high">High</option>
                 </select>
-                <button type="submit">Add Task</button>
+                <button type="submit" class="btn btn-success">Add Task</button>
             </form>
         </section>
 
         <!-- Task List Section -->
         <section id="task-list-section">
-            <div class="backup-restore-buttons">
-                <button id="backup-button">Backup Tasks</button>
-                <input type="file" id="restore-input" style="display:none;">
-                <button id="restore-button">Restore Tasks</button>
+            <div class="d-flex justify-content-between mb-3">
+                <button id="backup-button" class="btn btn-info">Backup Tasks</button>
+                <input type="file" id="restore-input" class="d-none">
+                <button id="restore-button" class="btn btn-warning">Restore Tasks</button>
             </div>
-            <ul id="task-list"></ul>
+            <ul id="task-list" class="list-group"></ul>
         </section>
 
         <!-- Archived Tasks Section -->
-        <section id="archived-tasks-section">
-            <h2 id="archived-tasks-header">Archived Tasks</h2>
-            <ul id="archived-task-list" class="hidden"></ul>
+        <section id="archived-tasks-section" class="mt-4">
+            <h2 id="archived-tasks-header" class="bg-secondary text-white text-center py-2 rounded">Archived Tasks</h2>
+            <ul id="archived-task-list" class="list-group d-none"></ul>
         </section>
     </main>
 
     <!-- Task Edit Modal -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <form id="edit-task-form">
-                <input type="text" id="edit-task-input" required>
-                <select id="edit-priority-select">
-                    <option value="low">Low</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
-                </select>
-                <button type="submit">Save Changes</button>
-            </form>
+    <div id="modal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Task</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-task-form">
+                        <div class="form-group">
+                            <label for="edit-task-input">Task</label>
+                            <input type="text" id="edit-task-input" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-priority-select">Priority</label>
+                            <select id="edit-priority-select" class="form-control">
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="TaskApp.js"></script>
 </body>
 </html>
