@@ -27,14 +27,14 @@ document.addEventListener('DOMContentLoaded', () => {
         archivedTaskList.innerHTML = '';
         tasks.forEach((task, index) => {
             const taskItem = document.createElement('li');
-            taskItem.className = `task-item ${task.done ? 'done' : ''}`;
+            taskItem.className = `task-item list-group-item ${task.done ? 'done' : ''}`;
             taskItem.dataset.id = index;
             taskItem.innerHTML = `
                 <span class="task-text">${task.text}</span>
                 <span class="task-priority">${task.priority}</span>
-                ${task.done ? '' : '<button class="edit-button"><i class="fas fa-edit"></i></button>'}
-                ${task.done ? '' : '<button class="delete-button"><i class="fas fa-trash"></i></button>'}
-                <button class="done-button"><i class="fas ${task.done ? 'fa-undo' : 'fa-check'}"></i></button>
+                ${task.done ? '' : '<button class="edit-button btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>'}
+                ${task.done ? '' : '<button class="delete-button btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>'}
+                <button class="done-button btn btn-sm btn-success"><i class="fas ${task.done ? 'fa-undo' : 'fa-check'}"></i></button>
             `;
             if (task.done) {
                 archivedTaskList.appendChild(taskItem);
@@ -72,7 +72,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(tasks));
         const downloadAnchorNode = document.createElement('a');
         downloadAnchorNode.setAttribute("href", dataStr);
-        downloadAnchorNode.setAttribute("download", "tasks_backup.json");
+        downloadAnchorNode.set
+
+Attribute("download", "tasks_backup.json");
         document.body.appendChild(downloadAnchorNode);
         downloadAnchorNode.click();
         downloadAnchorNode.remove();
@@ -111,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const task = tasks[id];
             editTaskInput.value = task.text;
             editPrioritySelect.value = task.priority;
-            modal.style.display = 'block';
+            $('#modal').modal('show');
         } else if (target.classList.contains('delete-button') || target.closest('.delete-button')) {
             deleteTask(id);
         } else if (target.classList.contains('done-button') || target.closest('.done-button')) {
@@ -129,12 +131,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     closeModal.addEventListener('click', () => {
-        modal.style.display = 'none';
+        $('#modal').modal('hide');
     });
 
     window.addEventListener('click', (e) => {
         if (e.target == modal) {
-            modal.style.display = 'none';
+            $('#modal').modal('hide');
         }
     });
 
@@ -144,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const priority = editPrioritySelect.value;
         if (text) {
             editTask(currentTaskId, text, priority);
-            modal.style.display = 'none';
+            $('#modal').modal('hide');
         }
     });
 
