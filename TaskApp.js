@@ -14,12 +14,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const backupButton = document.getElementById('backup-button');
     const restoreButton = document.getElementById('restore-button');
     const restoreInput = document.getElementById('restore-input');
+    const colorModeButton = document.getElementById('colorModeButton');
     let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    let colorMode = localStorage.getItem('colorMode') || 'light';
     let currentTaskId = null;
 
     // Functions
     const saveTasks = () => {
         localStorage.setItem('tasks', JSON.stringify(tasks));
+    };
+
+    const saveColorMode = () => {
+        localStorage.setItem('colorMode', colorMode);
     };
 
     const renderTasks = () => {
@@ -42,6 +48,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 taskList.appendChild(taskItem);
             }
         });
+    };
+
+    const applyColorMode = () => {
+        if (colorMode === 'dark') {
+            document.body.classList.add('dark-mode');
+            colorModeButton.textContent = 'Switch to Light';
+        } else {
+            document.body.classList.remove('dark-mode');
+            colorModeButton.textContent = 'Switch to Dark';
+        }
     };
 
     const addTask = (text, priority) => {
@@ -69,7 +85,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const backupTasks = () => {
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(tasks));
+        const backupData = {
+            tasks: tasks,
+            colorMode: colorMode
+        };
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData));
         const downloadAnchorNode = document.createElement('a');
         downloadAnchorNode.setAttribute("href", dataStr);
         downloadAnchorNode.setAttribute("download", "tasks_backup.json");
@@ -83,8 +103,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const reader = new FileReader();
         reader.onload = (e) => {
             const content = e.target.result;
-            tasks = JSON.parse(content);
+            const backupData = JSON.parse(content);
+            tasks = backupData.tasks;
+            colorMode = backupData.colorMode || 'light';
             saveTasks();
+            saveColorMode();
+            applyColorMode();
             renderTasks();
         };
         reader.readAsText(file);
@@ -152,6 +176,12 @@ document.addEventListener('DOMContentLoaded', () => {
         archivedTaskList.classList.toggle('visible');
     });
 
+    colorModeButton.addEventListener('click', () => {
+        colorMode = colorMode === 'dark' ? 'light' : 'dark';
+        saveColorMode();
+        applyColorMode();
+    });
+
     backupButton.addEventListener('click', backupTasks);
 
     restoreButton.addEventListener('click', () => {
@@ -161,5 +191,6 @@ document.addEventListener('DOMContentLoaded', () => {
     restoreInput.addEventListener('change', restoreTasks);
 
     // Initial Render
+    applyColorMode();
     renderTasks();
 });
