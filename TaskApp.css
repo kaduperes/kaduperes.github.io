@@ -1,5 +1,30 @@
 /* Custom Styles */
 
+/* Dark Mode */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+body.dark-mode .navbar, body.dark-mode .modal-content {
+    background-color: #333;
+    color: #e0e0e0;
+}
+
+body.dark-mode .list-group-item {
+    background-color: #444;
+    color: #e0e0e0;
+}
+
+body.dark-mode .bg-primary, body.dark-mode .bg-secondary {
+    background-color: #444 !important;
+}
+
+body.dark-mode .btn {
+    background-color: #555;
+    color: #e0e0e0;
+}
+
 /* Task Item Styles */
 .task-item {
     display: flex;
