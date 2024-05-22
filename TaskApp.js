@@ -9,12 +9,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const editTaskForm = document.getElementById('edit-task-form');
     const editTaskInput = document.getElementById('edit-task-input');
     const editPrioritySelect = document.getElementById('edit-priority-select');
-    const archivedTasksHeader = document.getElementById('archived-tasks-header');
     const archivedTaskList = document.getElementById('archived-task-list');
     const backupButton = document.getElementById('backup-button');
     const restoreButton = document.getElementById('restore-button');
     const restoreInput = document.getElementById('restore-input');
     const colorModeButton = document.getElementById('colorModeButton');
+    const splashScreen = document.getElementById('splash-screen');
+    const archiveIcon = document.getElementById('archive-icon');
+    const archivedTasksModal = document.getElementById('archived-tasks-modal');
     let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
     let colorMode = localStorage.getItem('colorMode') || 'light';
     let currentTaskId = null;
@@ -114,6 +116,16 @@ document.addEventListener('DOMContentLoaded', () => {
         reader.readAsText(file);
     };
 
+    const showSplashScreen = () => {
+        splashScreen.style.display = 'flex';
+        setTimeout(() => {
+            splashScreen.classList.add('fade-out');
+            setTimeout(() => {
+                splashScreen.style.display = 'none';
+            }, 1000); // Matches the CSS transition duration
+        }, 3000); // Duration of the splash screen
+    };
+
     // Event Listeners
     taskForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -172,10 +184,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    archivedTasksHeader.addEventListener('click', () => {
-        archivedTaskList.classList.toggle('visible');
-    });
-
     colorModeButton.addEventListener('click', () => {
         colorMode = colorMode === 'dark' ? 'light' : 'dark';
         saveColorMode();
@@ -190,7 +198,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     restoreInput.addEventListener('change', restoreTasks);
 
+    archiveIcon.addEventListener('click', () => {
+        $('#archived-tasks-modal').modal('show');
+    });
+
     // Initial Render
     applyColorMode();
     renderTasks();
+    showSplashScreen();
 });
